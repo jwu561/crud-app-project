@@ -1,0 +1,28 @@
+/* PostForm.css */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .post-form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .post-form input,
+  .post-form textarea,
+  .post-form button {
+    margin: 10px 0;
+    padding: 10px;
+  }
+  
+  .post-form button {
+    cursor: pointer;
+  }
