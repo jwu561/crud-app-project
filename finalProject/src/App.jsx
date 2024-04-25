@@ -1,21 +1,19 @@
 // App.js
-import React, { useState } from 'react'; // Corrected import
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import PostForm from './components/PostForm';
 import Homepage from './components/Homepage';
+import Post from './components/Post'; // Corrected import
 import './App.css';
 
 function App() {
-
   const [posts, setPosts] = useState([]);
 
   const addPost = (post) => {
-    console.log('Adding post:', post); // Add this line
-    setPosts([post, ...posts]);
+    const newPost = { id: posts.length + 1, ...post }; // Assign a unique id
+    console.log('Adding post:', newPost); // Log newPost instead of post
+    setPosts([newPost, ...posts]); // Add newPost to state
   };
-
-
-
 
   return (
     <Router>
@@ -29,9 +27,9 @@ function App() {
         </div>
       </nav>
       <Routes>
-      <Route path="/" element={<Homepage posts={posts} />} />
         <Route path="/new-post" element={<PostForm addPost={addPost} />} />
-        {/* Add more routes as needed */}
+        <Route path="/post/:id" element={<Post posts={posts} />} />
+        <Route path="/" element={<Homepage posts={posts} />} />
       </Routes>
     </Router>
   );

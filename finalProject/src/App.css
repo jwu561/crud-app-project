@@ -23,3 +23,8 @@
 body {
     padding-top: 60px; /* Adjust this value based on the height of your navbar */
 }
+
+img {
+  max-width: 50%;
+  height: auto;
+}
