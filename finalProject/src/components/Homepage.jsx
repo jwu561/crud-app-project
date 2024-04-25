@@ -1,5 +1,5 @@
 // Homepage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import { Link } from 'react-router-dom';
 import './Homepage.css';
 
@@ -33,6 +33,10 @@ function Homepage({ posts }) {
   
   const [sortedPosts, setSortedPosts] = useState([...posts]);
 
+  useEffect(() => {
+    setSortedPosts([...posts]);
+  }, [posts]); // Add posts as a dependency
+
   const sortByNewest = () => {
     const newSortedPosts = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     setSortedPosts(newSortedPosts);
@@ -45,8 +49,10 @@ function Homepage({ posts }) {
 
   return (
     <div className="posts-container">
-      <button onClick={sortByNewest}>Newest</button>
-      <button onClick={sortByMostPopular}>Most Popular</button>
+      <div className="button-container">
+  <button onClick={sortByNewest}>Newest</button>
+  <button onClick={sortByMostPopular}>Most Popular</button>
+</div>
       {sortedPosts.map((post) => (
         <Link key={post.id} to={`/post/${post.id}`} className="post">
           <h2>{post.title}</h2>

@@ -20,6 +20,13 @@
     color: white;
 }
 
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 1em; /* Optional: Add some horizontal padding */
+  }
+
 body {
     padding-top: 60px; /* Adjust this value based on the height of your navbar */
 }

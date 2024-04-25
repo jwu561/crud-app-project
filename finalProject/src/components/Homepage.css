@@ -13,3 +13,9 @@
     border: 1px solid #ccc;
     border-radius: 10px;
   }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Optional: Add some space between the buttons */
+  }

@@ -9,6 +9,7 @@ import './App.css';
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState('');
 
   const addPost = (post) => {
     const newPost = { id: posts.length + 1, comments: [],upvotes: 0,...post }; // Assign a unique id
@@ -16,12 +17,19 @@ function App() {
     setPosts([newPost, ...posts]); // Add newPost to state
   };
 
+  const filteredPosts = posts.filter(post => post.title.toLowerCase().includes(search.toLowerCase()));
+
   return (
     <Router>
       <nav className="navbar">
         <div className="navbar-left">
           <h1>Hub</h1>
         </div>
+        
+        <div className="search-bar">
+  <input type="text" placeholder="Search..." onChange={e => setSearch(e.target.value)} />
+</div>
+
         <div className="navbar-right">
           <Link to="/">Home</Link>
           <Link to="/new-post">Create New Post</Link>
@@ -30,7 +38,7 @@ function App() {
       <Routes>
         <Route path="/new-post" element={<PostForm addPost={addPost} />} />
         <Route path="/post/:id" element={<Post posts={posts} setPosts={setPosts} />} />
-        <Route path="/" element={<Homepage posts={posts} />} />
+        <Route path="/" element={<Homepage posts={filteredPosts} />} />
         <Route path="/edit/:id" element={<EditPost posts={posts} setPosts={setPosts} />} />
       </Routes>
     </Router>
