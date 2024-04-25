@@ -47,7 +47,7 @@ function EditPost({ posts, setPosts }) {
           value={formData.imageUrl}
           onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
         />
-        <button type="submit">Edit Post</button>
+        <button type="submit">Update Post</button>
       </form>
     </div>
   );
