@@ -10,7 +10,7 @@ function App() {
   const [posts, setPosts] = useState([]);
 
   const addPost = (post) => {
-    const newPost = { id: posts.length + 1, comments: [], ...post }; // Assign a unique id
+    const newPost = { id: posts.length + 1, comments: [],upvotes: 0,...post }; // Assign a unique id
     console.log('Adding post:', newPost); // Log newPost instead of post
     setPosts([newPost, ...posts]); // Add newPost to state
   };

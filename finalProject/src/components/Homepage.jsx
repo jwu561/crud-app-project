@@ -10,6 +10,7 @@ function Homepage({ posts }) {
             <Link key={post.id} to={`/post/${post.id}`} className="post">
               <h2>{post.title}</h2>
               <p>{post.timestamp.toLocaleString()}</p>
+              <p>{post.upvotes} upvotes</p>
             </Link>
           ))}
         </div>

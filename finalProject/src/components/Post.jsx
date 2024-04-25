@@ -18,12 +18,23 @@ function Post({ posts, setPosts }) {
     }));
   };
 
+  const upvotePost = () => {
+    setPosts(posts.map((p) => {
+      if (p.id === post.id) {
+        return { ...p, upvotes: p.upvotes + 1 };
+      } else {
+        return p;
+      }
+    }));
+  };
+
   return post ? (
     <div className="post">
       <h2>{post.title}</h2>
       <p>{post.content}</p>
       {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
       <p>{post.timestamp.toLocaleString()}</p>
+      <button onClick={upvotePost}>👍 {post.upvotes}</button>
       <CommentForm addComment={addComment} />
       {post.comments.map((comment, index) => (
         <p key={index}>{comment}</p>
