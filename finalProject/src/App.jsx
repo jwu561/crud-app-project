@@ -10,7 +10,7 @@ function App() {
   const [posts, setPosts] = useState([]);
 
   const addPost = (post) => {
-    const newPost = { id: posts.length + 1, ...post }; // Assign a unique id
+    const newPost = { id: posts.length + 1, comments: [], ...post }; // Assign a unique id
     console.log('Adding post:', newPost); // Log newPost instead of post
     setPosts([newPost, ...posts]); // Add newPost to state
   };
@@ -28,7 +28,7 @@ function App() {
       </nav>
       <Routes>
         <Route path="/new-post" element={<PostForm addPost={addPost} />} />
-        <Route path="/post/:id" element={<Post posts={posts} />} />
+        <Route path="/post/:id" element={<Post posts={posts} setPosts={setPosts} />} />
         <Route path="/" element={<Homepage posts={posts} />} />
       </Routes>
     </Router>
