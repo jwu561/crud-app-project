@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import PostForm from './components/PostForm';
+import Homepage from './components/Homepage';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         </div>
       </nav>
       <Routes>
+        <Route path="/" element={<Homepage />} /> {/* use the Homepage component */}
         <Route path="/new-post" element={<PostForm />} />
         {/* Add more routes as needed */}
       </Routes>

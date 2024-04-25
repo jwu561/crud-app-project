@@ -1,5 +1,4 @@
-
-// PostForm.js
+// PostForm.jsx
 import React, { useState } from 'react';
 import './PostForm.css';
 
@@ -10,7 +9,6 @@ function PostForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can handle the form submission, e.g. send the data to an API
     console.log({ title, content, imageUrl });
   };
 

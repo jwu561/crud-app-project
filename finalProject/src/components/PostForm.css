@@ -1,12 +1,13 @@
 /* PostForm.css */
 .form-container {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* aligns the form to the center */
     align-items: center;
     height: 100vh;
-  }
-  
-  .post-form {
+    width: 100%; /* ensures the container takes up the full width of the viewport */
+}
+
+.post-form {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -14,15 +15,15 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-  }
-  
-  .post-form input,
-  .post-form textarea,
-  .post-form button {
+}
+
+.post-form input,
+.post-form textarea,
+.post-form button {
     margin: 10px 0;
     padding: 10px;
-  }
-  
-  .post-form button {
+}
+
+.post-form button {
     cursor: pointer;
-  }
+}
