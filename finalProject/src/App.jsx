@@ -1,11 +1,22 @@
 // App.js
-import React from 'react';
+import React, { useState } from 'react'; // Corrected import
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import PostForm from './components/PostForm';
 import Homepage from './components/Homepage';
 import './App.css';
 
 function App() {
+
+  const [posts, setPosts] = useState([]);
+
+  const addPost = (post) => {
+    console.log('Adding post:', post); // Add this line
+    setPosts([post, ...posts]);
+  };
+
+
+
+
   return (
     <Router>
       <nav className="navbar">
@@ -18,8 +29,8 @@ function App() {
         </div>
       </nav>
       <Routes>
-        <Route path="/" element={<Homepage />} /> {/* use the Homepage component */}
-        <Route path="/new-post" element={<PostForm />} />
+      <Route path="/" element={<Homepage posts={posts} />} />
+        <Route path="/new-post" element={<PostForm addPost={addPost} />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

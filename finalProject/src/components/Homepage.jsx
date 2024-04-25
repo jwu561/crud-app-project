@@ -1,11 +1,17 @@
 // Homepage.jsx
 import React from 'react';
+import './Homepage.css';
 
-function Homepage() {
+function Homepage({ posts }) {
   return (
-    <div>
-      <h2>Welcome to the homepage!</h2>
-      {/* Add more content as needed */}
+    <div className="posts-container">
+      {posts.map((post, index) => (
+        <div key={index} className="post">
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+          {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
+        </div>
+      ))}
     </div>
   );
 }

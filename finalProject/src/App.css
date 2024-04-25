@@ -1,20 +1,25 @@
 
+/* App.css */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #4a96e2;
-  position: fixed; /* Add this line */
-  width: 100%; /* Add this line */
-  top: 0; /* Add this line */
-  z-index: 100; /* Add this line */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #4a96e2;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
 }
 
 .navbar-right {
-  margin-right: 20px; /* Add right margin */
+    margin-right: 20px;
 }
 
 .navbar-right a {
-  margin-left: 10px;
-  color: white; /* Add this line */
+    margin-left: 10px;
+    color: white;
+}
+
+body {
+    padding-top: 60px; /* Adjust this value based on the height of your navbar */
 }

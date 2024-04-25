@@ -1,15 +1,19 @@
 // PostForm.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './PostForm.css';
 
-function PostForm() {
+function PostForm({ addPost }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
+  const navigate = useNavigate(); // Create a navigate function
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ title, content, imageUrl });
+    addPost({ title, content, imageUrl });
+    navigate('/'); // Redirect to the homepage
   };
 
   return (
