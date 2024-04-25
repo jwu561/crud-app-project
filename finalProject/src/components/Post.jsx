@@ -42,6 +42,7 @@ function Post({ posts, setPosts }) {
       <p>{post.timestamp.toLocaleString()}</p>
       <button onClick={upvotePost}>👍 {post.upvotes}</button>
       <button onClick={deletePost}>Delete Post</button>
+      <button onClick={() => navigate(`/edit/${post.id}`)}>Edit</button>
       <CommentForm addComment={addComment} />
       {post.comments.map((comment, index) => (
         <p key={index}>{comment}</p>
