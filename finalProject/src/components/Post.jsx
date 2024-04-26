@@ -1,37 +1,49 @@
-// Post.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CommentForm from './CommentForm';
 import './Post.css';
+import supabase from '../client';
 
 function Post({ posts, setPosts }) {
   const { id } = useParams();
-  const post = posts.find(post => post.id === Number(id));
   const navigate = useNavigate();
+  const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const addComment = (comment) => {
-    setPosts(posts.map((p) => {
-      if (p.id === post.id) {
-        return { ...p, comments: [...p.comments, comment] };
-      } else {
-        return p;
-      }
-    }));
+  useEffect(() => {
+    const fetchPost = async () => {
+      setIsLoading(true); // Add this line
+      const { data: post, error } = await supabase
+        .from('Post')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (error) console.error('Error fetching post:', error);
+      else setPost(post);
+      setIsLoading(false); // Add this line
+    };
+
+    fetchPost();
+  }, [id]);
+
+  
+
+  const upvotePost = async () => {
+    const { error } = await supabase
+      .from('Post')
+      .update({ Upvotes: post.Upvotes + 1 })
+      .eq('id', post.id);
+    if (error) console.error('Error upvoting post:', error);
+    else setPost({ ...post, Upvotes: post.Upvotes + 1 });
   };
 
-  const upvotePost = () => {
-    setPosts(posts.map((p) => {
-      if (p.id === post.id) {
-        return { ...p, upvotes: p.upvotes + 1 };
-      } else {
-        return p;
-      }
-    }));
-  };
-
-  const deletePost = () => {
-    setPosts(posts.filter(p => p.id !== post.id));
-    navigate('/');
+  const deletePost = async () => {
+    const { error } = await supabase
+      .from('Post')
+      .delete()
+      .eq('id', post.id);
+    if (error) console.error('Error deleting post:', error);
+    else navigate('/');
   };
 
   function timeSince(date) {
@@ -60,19 +72,45 @@ function Post({ posts, setPosts }) {
     return Math.floor(seconds) + " seconds ago";
   }
 
-  return post ? (
+  const addComment = async (commentText) => {
+    const { error } = await supabase
+      .from('Comments')
+      .insert([
+        { post_id: post.id, content: commentText },
+      ]);
+  
+    if (error) {
+      console.error('Error adding comment:', error);
+    } else {
+      // Fetch the updated list of comments and update state
+      const { data: comments, error: fetchError } = await supabase
+        .from('Comments')
+        .select('*')
+        .eq('post_id', post.id);
+  
+      if (fetchError) {
+        console.error('Error fetching comments:', fetchError);
+      } else {
+        setPost({ ...post, comments });
+      }
+    }
+  };
+
+  return isLoading ? (
+    <p>Loading...</p>
+  ) : post ? (
     <div className="post">
       <h2>{post.title}</h2>
       <p>{post.content}</p>
       {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
-      <p>Posted {timeSince(new Date(post.timestamp))}</p>
-      <button onClick={upvotePost}>👍 {post.upvotes}</button>
+      <p>Posted {timeSince(new Date(post.created_at))}</p>
+      <button onClick={upvotePost}>👍 {post.Upvotes}</button>
       <button onClick={deletePost}>Delete Post</button>
       <button onClick={() => navigate(`/edit/${post.id}`)}>Edit</button>
       <CommentForm addComment={addComment} />
-      {post.comments.map((comment, index) => (
-        <p key={index}>{comment}</p>
-      ))}
+      {post && post.comments && post.comments.map((comment, index) => (
+  <p key={index}>{comment.content}</p>
+))}
     </div>
   ) : (
     <p>Post not found</p>
