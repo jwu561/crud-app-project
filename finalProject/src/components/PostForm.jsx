@@ -2,21 +2,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PostForm.css';
+import  supabase  from '../client'
 
-function PostForm({ addPost }) {
+function PostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const timestamp = new Date();
-    addPost({ title, content, imageUrl, timestamp });
-    navigate('/');
+  
+    const { data, error } = await supabase
+    .from('Post')
+    .insert([
+      { Title: title, Content: content, ImageURL: imageUrl },
+    ]);
+  
+    // Handle the response
+    if (error) {
+      console.error('Error: ', error);
+    } else {
+      // Clear the form
+      setTitle('');
+      setContent('');
+      setImageUrl('');
+  
+      // Navigate to the homepage
+      navigate('/');
+    }
   };
-
+  
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit} className="post-form">
