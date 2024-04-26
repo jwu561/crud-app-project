@@ -100,9 +100,9 @@ function Post({ posts, setPosts }) {
     <p>Loading...</p>
   ) : post ? (
     <div className="post">
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      {post.imageUrl && <img src={post.imageUrl} alt={post.title} />}
+      {post && post.Title && <h2>{post.Title}</h2>}
+{post && post.Content && <p>{post.Content}</p>}
+{post && post.imageUrl && <img src={post.imageUrl} alt={post.Title} />}
       <p>Posted {timeSince(new Date(post.created_at))}</p>
       <button onClick={upvotePost}>👍 {post.Upvotes}</button>
       <button onClick={deletePost}>Delete Post</button>

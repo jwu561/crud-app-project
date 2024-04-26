@@ -68,9 +68,9 @@ function Homepage({ posts }) {
 </div>
       {sortedPosts.map((post) => (
         <Link key={post.id} to={`/post/${post.id}`} className="post">
-          <h2>{post.title}</h2>
+          <h2>{post.Title}</h2>
           <p>Posted {timeSince(new Date(post.created_at))}</p>
-          <p>{post.upvotes} upvotes</p>
+          <p>{post.Upvotes} upvotes</p>
         </Link>
       ))}
     </div>
