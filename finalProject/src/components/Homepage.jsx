@@ -40,12 +40,12 @@ function Homepage({ posts }) {
   }, [posts]); // Add posts as a dependency
 
   const sortByNewest = () => {
-    const newSortedPosts = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const newSortedPosts = [...sortedPosts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     setSortedPosts(newSortedPosts);
   };
 
   const sortByMostPopular = () => {
-    const newSortedPosts = [...posts].sort((a, b) => b.upvotes - a.upvotes);
+    const newSortedPosts = [...sortedPosts].sort((a, b) => b.Upvotes - a.Upvotes);
     setSortedPosts(newSortedPosts);
   };
 
