@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react'; // Import useEffect
 import { Link } from 'react-router-dom';
 import './Homepage.css';
+import  supabase  from '../client'
+
 
 function Homepage({ posts }) {
 
@@ -31,7 +33,7 @@ function Homepage({ posts }) {
     return Math.floor(seconds) + " seconds ago";
   }
   
-  const [sortedPosts, setSortedPosts] = useState([...posts]);
+  const [sortedPosts, setSortedPosts] = useState([]);
 
   useEffect(() => {
     setSortedPosts([...posts]);
@@ -47,6 +49,17 @@ function Homepage({ posts }) {
     setSortedPosts(newSortedPosts);
   };
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data: posts, error } = await supabase.from('Post').select('*');
+      if (error) console.error('Error fetching posts:', error);
+      else setSortedPosts(posts);
+    };
+
+    fetchPosts();
+  }, []);
+
+
   return (
     <div className="posts-container">
       <div className="button-container">
@@ -56,7 +69,7 @@ function Homepage({ posts }) {
       {sortedPosts.map((post) => (
         <Link key={post.id} to={`/post/${post.id}`} className="post">
           <h2>{post.title}</h2>
-          <p>Posted {timeSince(new Date(post.timestamp))}</p>
+          <p>Posted {timeSince(new Date(post.created_at))}</p>
           <p>{post.upvotes} upvotes</p>
         </Link>
       ))}
