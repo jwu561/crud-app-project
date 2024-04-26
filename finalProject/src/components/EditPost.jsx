@@ -1,30 +1,50 @@
 // EditPost.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import supabase from '../client';
 
-function EditPost({ posts, setPosts }) {
+function EditPost() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const post = posts.find(post => post.id === Number(id));
+  const [post, setPost] = useState(null);
   const [formData, setFormData] = useState({ title: '', content: '', imageUrl: '' });
 
   useEffect(() => {
+    fetchPost();
+  }, [id]);
+
+  async function fetchPost() {
+    const { data, error } = await supabase
+      .from('Post')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) console.error('Error fetching post:', error);
+    else if (data) setPost(data);
+  }
+
+  useEffect(() => {
     if (post) {
-      setFormData({ title: post.title, content: post.content, imageUrl: post.imageUrl });
+      setFormData({ title: post.Title, content: post.Content, imageUrl: post.ImageURL });
     }
   }, [post]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const updatedPosts = posts.map((p) => {
-      if (p.id === post.id) {
-        return { ...p, ...formData };
-      } else {
-        return p;
-      }
-    });
-    setPosts(updatedPosts);
+    const { data, error } = await supabase
+      .from('Post')
+      .update({
+        Title: formData.title,
+        Content: formData.content,
+        ImageURL: formData.imageUrl
+      })
+      .eq('id', post.id);
+
+    if (error) console.error('Error updating post:', error);
+
     navigate('/');
+    
   };
 
   return (
