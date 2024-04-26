@@ -20,6 +20,7 @@ function Post({ posts, setPosts }) {
         .single();
       if (error) console.error('Error fetching post:', error);
       else setPost(post);
+      console.log(post.ImageUrl)
       setIsLoading(false); // Add this line
     };
 
@@ -102,7 +103,7 @@ function Post({ posts, setPosts }) {
     <div className="post">
       {post && post.Title && <h2>{post.Title}</h2>}
 {post && post.Content && <p>{post.Content}</p>}
-{post && post.imageUrl && <img src={post.imageUrl} alt={post.Title} />}
+{post && post.ImageURL && <img src={post.ImageURL} alt={post.Title} />}
       <p>Posted {timeSince(new Date(post.created_at))}</p>
       <button onClick={upvotePost}>👍 {post.Upvotes}</button>
       <button onClick={deletePost}>Delete Post</button>
