@@ -12,18 +12,25 @@ function Post({ posts, setPosts }) {
 
   useEffect(() => {
     const fetchPost = async () => {
-      setIsLoading(true); // Add this line
+      setIsLoading(true);
       const { data: post, error } = await supabase
         .from('Post')
         .select('*')
         .eq('id', id)
         .single();
       if (error) console.error('Error fetching post:', error);
-      else setPost(post);
-      console.log(post.ImageUrl)
-      setIsLoading(false); // Add this line
+      else {
+        // Fetch the comments for the post
+        const { data: comments, error: commentsError } = await supabase
+          .from('Comments')
+          .select('*')
+          .eq('post_id', id);
+        if (commentsError) console.error('Error fetching comments:', commentsError);
+        else setPost({ ...post, comments });
+      }
+      setIsLoading(false);
     };
-
+  
     fetchPost();
   }, [id]);
 
@@ -90,29 +97,51 @@ function Post({ posts, setPosts }) {
     return Math.floor(seconds) + " seconds ago";
   }
 
-  const addComment = async (commentText) => {
-    const { error } = await supabase
+// Add a new state variable to track whether a comment has been added
+const [commentAdded, setCommentAdded] = useState(false);
+
+const addComment = async (commentText) => {
+  const { error } = await supabase
+    .from('Comments')
+    .insert([
+      { post_id: post.id, content: commentText },
+    ]);
+
+  if (error) {
+    console.error('Error adding comment:', error);
+  } else {
+    // Fetch the updated list of comments and update state
+    const { data: comments, error: fetchError } = await supabase
       .from('Comments')
-      .insert([
-        { post_id: post.id, content: commentText },
-      ]);
-  
-    if (error) {
-      console.error('Error adding comment:', error);
+      .select('*')
+      .eq('post_id', post.id);
+
+    if (fetchError) {
+      console.error('Error fetching comments:', fetchError);
     } else {
-      // Fetch the updated list of comments and update state
-      const { data: comments, error: fetchError } = await supabase
-        .from('Comments')
-        .select('*')
-        .eq('post_id', post.id);
-  
-      if (fetchError) {
-        console.error('Error fetching comments:', fetchError);
-      } else {
-        setPost({ ...post, comments });
-      }
+      const updatedPost = { ...post, comments };
+      setPost(updatedPost);
+
+      // Also update the posts state
+      const updatedPosts = posts.map(p => p.id === post.id ? updatedPost : p);
+      setPosts(updatedPosts);
+
+      // Set commentAdded to true to indicate that a comment has been added
+      setCommentAdded(true);
     }
-  };
+  }
+};
+
+// Use the useEffect hook to listen for changes to the commentAdded state
+useEffect(() => {
+  if (commentAdded) {
+    // Navigate away from the post
+    navigate('/');
+
+    // Reset commentAdded to false
+    setCommentAdded(false);
+  }
+}, [commentAdded]);
 
   return isLoading ? (
     <p>Loading...</p>

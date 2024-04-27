@@ -41,8 +41,8 @@ function App() {
     }
   }, [posts, search]); 
 
-  console.log(posts);
-  console.log(search);
+  // console.log(posts);
+  // console.log(search);
 
 
   return (
