@@ -136,7 +136,7 @@ const addComment = async (commentText) => {
 useEffect(() => {
   if (commentAdded) {
     // Navigate away from the post
-    navigate('/');
+    // navigate('/');
 
     // Reset commentAdded to false
     setCommentAdded(false);
