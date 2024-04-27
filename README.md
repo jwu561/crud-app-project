@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![](https://github.com/COP4808-Spring2024-Full-Stack-Webdev/hw7-jwu561/blob/main/hw7.gif)
+![](https://github.com/COP4808-Spring2024-Full-Stack-Webdev/final-project-jwu561/blob/main/finalproject.gif)
 
 
 
