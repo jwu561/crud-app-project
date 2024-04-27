@@ -39,12 +39,29 @@ function Post({ posts, setPosts }) {
   };
 
   const deletePost = async () => {
-    const { error } = await supabase
+    // First, delete the comments associated with the post
+    const { error: deleteCommentsError } = await supabase
+      .from('Comments')
+      .delete()
+      .eq('post_id', post.id);
+    if (deleteCommentsError) {
+      console.error('Error deleting comments:', deleteCommentsError);
+      return;
+    }
+  
+    // Then, delete the post
+    const { error: deletePostError } = await supabase
       .from('Post')
       .delete()
       .eq('id', post.id);
-    if (error) console.error('Error deleting post:', error);
-    else navigate('/');
+    if (deletePostError) {
+      console.error('Error deleting post:', deletePostError);
+    } else {
+      navigate('/');
+      // Update the posts state
+      const newPosts = posts.filter(p => p.id !== post.id);
+      setPosts(newPosts);
+    }
   };
 
   function timeSince(date) {
